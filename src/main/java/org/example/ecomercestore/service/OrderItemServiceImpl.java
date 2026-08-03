@@ -1,4 +1,4 @@
-package org.example.ecomercestore.services;
+package org.example.ecomercestore.service;
 
 import jakarta.transaction.Transactional;
 import org.example.ecomercestore.model.OrderItem;

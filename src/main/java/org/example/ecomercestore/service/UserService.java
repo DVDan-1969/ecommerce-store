@@ -1,7 +1,6 @@
-package org.example.ecomercestore.services;
+package org.example.ecomercestore.service;
 
 import org.example.ecomercestore.model.User;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
