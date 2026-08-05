@@ -15,20 +15,25 @@ public class Product {
     private String description;
     private BigDecimal price;
     private int quantity;
+    private String image;
+
+
 
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
     private Category category;
+
     @OneToMany(mappedBy = "product",cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
 
-    public  Product(Category category ) {}
+    public  Product() {}
 
-    public Product(String name, String description, BigDecimal price, int quantity) {
+    public Product(String name, String description, BigDecimal price, int quantity, String image) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.image = image;
     }
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
@@ -40,4 +45,8 @@ public class Product {
     public void setPrice(BigDecimal price) {this.price = price;}
     public int getQuantity() {return quantity;}
     public void setQuantity(int quantity) {this.quantity = quantity;}
+    public String getImage() {return image;}
+    public void setImage(String image) {this.image = image;}
+    public Category getCategory() {return category;}
+    public void setCategory(Category category) {this.category = category;}
 }
