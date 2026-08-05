@@ -3,6 +3,7 @@ package org.example.ecomercestore.model;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -11,8 +12,8 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    String data;
-    BigDecimal total;
+    private Date data;
+    private BigDecimal total;
 
 
     @ManyToOne
@@ -23,15 +24,15 @@ public class Order {
 
 
     public Order() {}
-    public Order(String data, BigDecimal total) {
+    public Order(Date data, BigDecimal total) {
         this.data = data;
         this.total = total;
     }
 
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
-    public String getData() {return data;}
-    public void setData(String data) {this.data = data;}
-    public BigDecimal getTotalPrice() {return total;}
-    public void setTotalPrice(BigDecimal totalPrice) {this.total = totalPrice;}
+    public Date getData() {return data;}
+    public void setData(Date data) {this.data = data;}
+    public BigDecimal getTotal() {return total;}
+    public void setTotal(BigDecimal total) {this.total = total;}
 }
