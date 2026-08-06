@@ -1,17 +1,19 @@
 package org.example.ecomercestore.service;
 
-import org.example.ecomercestore.model.Product;
+import org.example.ecomercestore.dto.ProductRequestDTO;
+import org.example.ecomercestore.dto.ProductResponseDTO;
+
 
 import java.util.List;
 
 public interface ProductService {
-    List<Product> getAllProducts();
+    List<ProductResponseDTO> getAllProducts();
 
-    Product getProductById(Long id);
+    ProductResponseDTO getProductById(Long id);
 
-    Product save(Product product);
+    ProductResponseDTO save(ProductRequestDTO dto);
 
-    Product update(Long id,Product product);
+    ProductResponseDTO update(Long id,ProductRequestDTO dto);
 
 
     void deleteById(Long id);
