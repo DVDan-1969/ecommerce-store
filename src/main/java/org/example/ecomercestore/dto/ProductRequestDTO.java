@@ -18,7 +18,7 @@ public class ProductRequestDTO {
     @NotNull
     @Min(0)
     private Integer productQuantity;
-    private String image;
+    private String productImage;
     @NotNull
     private Long categoryId;
 
@@ -47,10 +47,10 @@ public class ProductRequestDTO {
         this.productQuantity = productQuantity;
     }
     public String getProductImage() {
-        return image;
+        return productImage;
     }
     public void setProductImage(String image) {
-        this.image = image;
+        this.productImage = image;
     }
     public Long getCategoryId() {
         return categoryId;
