@@ -1,5 +1,8 @@
 package org.example.ecomercestore.controller;
 
+
+import org.example.ecomercestore.dto.ProductRequestDTO;
+import org.example.ecomercestore.dto.ProductResponseDTO;
 import org.example.ecomercestore.model.Product;
 import org.example.ecomercestore.service.ProductService;
 import org.springframework.http.ResponseEntity;
@@ -17,18 +20,18 @@ public class ProductController {
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<ProductResponseDTO> getAllProducts() {
         return service.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    public Product getProductById(@PathVariable Long id) {
+    public ProductResponseDTO getProductById(@PathVariable Long id) {
         return service.getProductById(id);
     }
 
     @PostMapping
-    public Product saveProduct(@RequestBody Product product) {
-        return service.save(product);
+    public ProductResponseDTO saveProduct(@RequestBody ProductRequestDTO dto) {
+        return service.save(dto);
     }
 
     @DeleteMapping("/{id}")
@@ -38,8 +41,10 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProductById(@PathVariable Long id, @RequestBody Product product) {
-        Product updatedProduct = service.update(id, product);
+    public ResponseEntity<ProductResponseDTO> updateProductById(
+            @PathVariable Long id,
+            @RequestBody ProductRequestDTO dto) {
+        ProductResponseDTO updatedProduct = service.update(id,dto);
         return ResponseEntity.ok(updatedProduct);
     }
 }
