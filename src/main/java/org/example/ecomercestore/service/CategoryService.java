@@ -1,17 +1,20 @@
 package org.example.ecomercestore.service;
 
-import org.example.ecomercestore.model.Category;
+import org.example.ecomercestore.dto.CategoryRequestDTO;
+import org.example.ecomercestore.dto.CategoryResponseDTO;
+
 
 import java.util.List;
 
 public interface CategoryService {
-    List<Category> getAllCategories();
 
-    Category getCategoryById(Long id);
+    List<CategoryResponseDTO> getAllCategories();
 
-    Category saveCategory(Category category);
+    CategoryResponseDTO getCategoryById(Long id);
 
-    Category updateCategory(Long id, Category category);
+    CategoryResponseDTO saveCategory(CategoryRequestDTO dto);
+
+    CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO dto);
 
     void deleteCategory(Long id);
 }
