@@ -1,8 +1,8 @@
 package org.example.ecomercestore.controller;
 
-import org.example.ecomercestore.model.Category;
+import org.example.ecomercestore.dto.CategoryRequestDTO;
+import org.example.ecomercestore.dto.CategoryResponseDTO;
 import org.example.ecomercestore.service.CategoryService;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,29 +18,31 @@ public class CategoryController {
     }
 
     @GetMapping
-    public List<Category> getAllCategories() {
+    public List<CategoryResponseDTO> getAllCategories() {
         return service.getAllCategories();
     }
 
     @GetMapping("/{id}")
-    public Category getCategoryById(@PathVariable Long id) {
+    public CategoryResponseDTO getCategoryById(@PathVariable Long id) {
         return service.getCategoryById(id);
     }
 
     @PostMapping
-    public Category saveCategory(@RequestBody Category category) {
-        return service.saveCategory(category);
+    public CategoryResponseDTO saveCategory(@RequestBody CategoryRequestDTO dto) {
+        return service.saveCategory(dto);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCategoryById(@PathVariable Long id) {
-        service.getCategoryById(id);
+        service.deleteCategory(id);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long id, @RequestBody Category category) {
-        Category updatedCategory = service.updateCategory(id, category);
+    public ResponseEntity<CategoryResponseDTO> updateCategory(
+            @PathVariable Long id,
+            @RequestBody CategoryRequestDTO dto) {
+        CategoryResponseDTO updatedCategory = service.updateCategory(id,dto);
         return ResponseEntity.ok(updatedCategory);
     }
 }
