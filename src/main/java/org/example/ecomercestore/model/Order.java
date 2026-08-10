@@ -35,4 +35,7 @@ public class Order {
     public void setData(Date data) {this.data = data;}
     public BigDecimal getTotal() {return total;}
     public void setTotal(BigDecimal total) {this.total = total;}
+    public User getUser() {return user;}
+    public void setUser(User user) {this.user = user;}
+
 }

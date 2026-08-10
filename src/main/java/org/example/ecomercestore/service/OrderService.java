@@ -1,18 +1,19 @@
 package org.example.ecomercestore.service;
 
-import org.example.ecomercestore.model.Order;
+import org.example.ecomercestore.dto.OrderRequestDTO;
+import org.example.ecomercestore.dto.OrderResponseDTO;
 
 import java.util.List;
 
 public interface OrderService {
-    List<Order> getAllOrders();
 
+    List<OrderResponseDTO> getAllOrders();
 
-    Order getOrderById(Long id);
+    OrderResponseDTO getOrderById(Long id);
 
-    Order save(Order order);
+    OrderResponseDTO save(OrderRequestDTO dto);
 
-    Order update(Long id, Order order);
+    OrderResponseDTO update(Long id, OrderRequestDTO dto);
 
     void deleteById(Long id);
 }
