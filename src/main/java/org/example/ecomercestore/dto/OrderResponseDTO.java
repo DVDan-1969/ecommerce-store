@@ -14,6 +14,7 @@ public class OrderResponseDTO {
         this.id = id;
         this.date = date;
         this.total = total;
+        this.userId = userId;
     }
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}

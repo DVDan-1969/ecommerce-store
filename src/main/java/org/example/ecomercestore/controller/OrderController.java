@@ -1,6 +1,7 @@
 package org.example.ecomercestore.controller;
 
-import org.example.ecomercestore.model.Order;
+import org.example.ecomercestore.dto.OrderRequestDTO;
+import org.example.ecomercestore.dto.OrderResponseDTO;
 import org.example.ecomercestore.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,29 +18,29 @@ public class OrderController {
     }
 
     @GetMapping
-    public List<Order> getAllOrders() {
+    public List<OrderResponseDTO> getAllOrders() {
         return service.getAllOrders();
     }
 
     @GetMapping("/{id}")
-    public Order getOrderById(@PathVariable Long id) {
+    public OrderResponseDTO getOrderById(@PathVariable Long id) {
         return service.getOrderById(id);
     }
 
     @PostMapping
-    public Order saveOrder(@RequestBody Order order) {
-        return service.save(order);
+    public OrderResponseDTO saveOrder(@RequestBody OrderRequestDTO dto) {
+        return service.save(dto);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteOrderById(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteOrderById(@PathVariable Long id) {
         service.deleteById(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Order> updateOrder(@PathVariable Long id, @RequestBody Order order) {
-        Order updatedOrder = service.update(id, order);
+    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderRequestDTO dto) {
+        OrderResponseDTO updatedOrder = service.update(id,dto);
         return ResponseEntity.ok(updatedOrder);
     }
 }
