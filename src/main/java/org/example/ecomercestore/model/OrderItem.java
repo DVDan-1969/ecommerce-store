@@ -21,14 +21,15 @@ public class OrderItem {
     private Product product;
 
     public OrderItem() {}
-    public OrderItem(String order, String product, BigDecimal price, int quantity) {
-        this.price = price;
-        this.quantity = quantity;
-    }
+
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
     public BigDecimal getPrice() {return price;}
     public void setPrice(BigDecimal price) {this.price = price;}
     public int getQuantity() {return quantity;}
     public void setQuantity(int quantity) {this.quantity = quantity;}
+    public Order getOrder() {return order;}
+    public void setOrder(Order order) {this.order = order;}
+    public Product getProduct() {return product;}
+    public void setProduct(Product product) {this.product = product;}
 }

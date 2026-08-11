@@ -1,6 +1,7 @@
 package org.example.ecomercestore.controller;
 
-import org.example.ecomercestore.model.OrderItem;
+import org.example.ecomercestore.dto.OrderItemRequestDTO;
+import org.example.ecomercestore.dto.OrderItemResponseDTO;
 import org.example.ecomercestore.service.OrderItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -8,32 +9,32 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("orderItems")
+@RequestMapping("/orderItems")
 public class OrderItemController {
-    private OrderItemService service;
+    private final OrderItemService service;
 
     public OrderItemController(OrderItemService service) {
         this.service = service;
     }
 
     @GetMapping
-    public List<OrderItem> getAllOrderItems() {
+    public List<OrderItemResponseDTO> getAllOrderItems() {
         return service.getAllOrderItems();
     }
 
     @GetMapping("/{id}")
-    public OrderItem getOrderItemById(@PathVariable Long id) {
+    public OrderItemResponseDTO getOrderItemById(@PathVariable Long id) {
         return service.getOrderItemById(id);
     }
 
     @PostMapping
-    public OrderItem saveOrderItem(@RequestBody OrderItem orderItem) {
-        return service.save(orderItem);
+    public OrderItemResponseDTO saveOrderItem(@RequestBody OrderItemRequestDTO dto) {
+        return service.save(dto);
     }
 
-    @PutMapping
-    public ResponseEntity<OrderItem> update(@PathVariable Long id, @RequestBody OrderItem orderItem) {
-        OrderItem updatedOrderItem = service.update(id, orderItem);
+    @PutMapping("/{id}")
+    public ResponseEntity<OrderItemResponseDTO> update(@PathVariable Long id, @RequestBody OrderItemRequestDTO dto) {
+        OrderItemResponseDTO updatedOrderItem = service.update(id,dto);
         return ResponseEntity.ok(updatedOrderItem);
     }
 
