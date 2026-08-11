@@ -1,18 +1,20 @@
 package org.example.ecomercestore.service;
 
 
-import org.example.ecomercestore.model.OrderItem;
+import org.example.ecomercestore.dto.OrderItemRequestDTO;
+import org.example.ecomercestore.dto.OrderItemResponseDTO;
+
 
 import java.util.List;
 
 public interface OrderItemService {
-    List<OrderItem> getAllOrderItems();
+    List<OrderItemResponseDTO> getAllOrderItems();
 
-    OrderItem getOrderItemById(Long id);
+    OrderItemResponseDTO getOrderItemById(Long id);
 
-    OrderItem save(OrderItem orderItem);
+    OrderItemResponseDTO save(OrderItemRequestDTO dto);
 
-    OrderItem update(Long id, OrderItem orderItem);
+    OrderItemResponseDTO update(Long id, OrderItemRequestDTO dto);
 
     void deleteById(Long id);
 }
