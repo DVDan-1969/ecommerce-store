@@ -1,24 +1,23 @@
 package org.example.ecomercestore.service;
 
-import org.example.ecomercestore.model.User;
+import org.example.ecomercestore.dto.UserRequestDTO;
+import org.example.ecomercestore.dto.UserResponseDTO;
 
 import java.util.List;
 
 
 public interface UserService {
-    List<User> getAllUsers();
+    List<UserResponseDTO> getAllUsers();
 
-    User getUserById(Long id);
+    UserResponseDTO getUserById(Long id);
 
 
-    User getUserByEmail(String email);
+    UserResponseDTO getUserByEmail(String email);
 
-    User saveUser(User user);
+    UserResponseDTO saveUser(UserRequestDTO dto);
 
-    User updateUser(User user);
+    UserResponseDTO updateUser(Long id,UserRequestDTO dto);
 
 
     void deleteById(Long id);
-
-
 }
