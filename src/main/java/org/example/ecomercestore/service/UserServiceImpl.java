@@ -8,6 +8,7 @@ import org.example.ecomercestore.mapper.UserMapper;
 import org.example.ecomercestore.model.User;
 import org.example.ecomercestore.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
@@ -16,10 +17,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository repository;
     private final UserMapper userMapper;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository repository, UserMapper userMapper) {
+    public UserServiceImpl(UserRepository repository,
+                           UserMapper userMapper,
+                           PasswordEncoder passwordEncoder) {
         this.repository = repository;
         this.userMapper = userMapper;
+        this.passwordEncoder= passwordEncoder;
     }
 
     @Override
@@ -48,6 +53,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO saveUser(UserRequestDTO dto) {
         User user = userMapper.toEntity(dto);
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+        user.setPassword(encodedPassword);
         User savedUser = repository.save(user);
         return userMapper.toResponseDTO(savedUser);
 
@@ -58,7 +65,8 @@ public class UserServiceImpl implements UserService {
         User user=repository.findById(id)
                 .orElseThrow(()->new RuntimeException("User not found!"));
         user.setuserName(dto.getUserName());
-        user.setPassword(dto.getPassword());
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
+        user.setPassword(encodedPassword);
         user.setEmail(dto.getEmail());
         user.setRole(dto.getRole());
         User updatedUser=repository.save(user);
