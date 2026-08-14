@@ -3,6 +3,8 @@ package org.example.ecomercestore.service;
 import jakarta.transaction.Transactional;
 import org.example.ecomercestore.dto.ProductRequestDTO;
 import org.example.ecomercestore.dto.ProductResponseDTO;
+import org.example.ecomercestore.exception.CategoryNotFoundException;
+import org.example.ecomercestore.exception.ProductNotFoundException;
 import org.example.ecomercestore.mapper.ProductMapper;
 import org.example.ecomercestore.model.Category;
 import org.example.ecomercestore.model.Product;
@@ -41,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDTO getProductById(Long id) {
         Product product = repository.findById(id)
-                .orElseThrow(()->new RuntimeException("product not found"));
+                .orElseThrow(()->new ProductNotFoundException("product not found"));
 
         return productMapper.toResponseDTO(product);
     }
@@ -49,7 +51,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDTO save(ProductRequestDTO dto) {
         Category category= categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(()->new RuntimeException("Category not found"));
+                .orElseThrow(()->new CategoryNotFoundException("Category not found"));
         Product product = productMapper.toEntity(dto,category);
         Product savedProduct = repository.save(product);
         return productMapper.toResponseDTO(savedProduct);
@@ -58,9 +60,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
         Product product = repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Product not found"));
+                .orElseThrow(()->new ProductNotFoundException("Product not found"));
         Category category=categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(()->new RuntimeException("Category not found"));
+                .orElseThrow(()->new CategoryNotFoundException("Category not found"));
         product.setName(dto.getProductName());
         product.setDescription(dto.getProductDescription());
         product.setPrice(dto.getProductPrice());
@@ -73,7 +75,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        Product product= repository.findById(id)
+                .orElseThrow(()->new ProductNotFoundException("Product not found"));
+        repository.delete(product);
     }
 }
 

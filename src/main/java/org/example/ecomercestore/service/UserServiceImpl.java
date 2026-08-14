@@ -4,6 +4,7 @@ import jakarta.transaction.Transactional;
 
 import org.example.ecomercestore.dto.UserRequestDTO;
 import org.example.ecomercestore.dto.UserResponseDTO;
+import org.example.ecomercestore.exception.UserNotFoundException;
 import org.example.ecomercestore.mapper.UserMapper;
 import org.example.ecomercestore.model.User;
 import org.example.ecomercestore.repository.UserRepository;
@@ -39,14 +40,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO getUserById(Long id) {
         User user = repository.findById(id)
-                .orElseThrow(()->new RuntimeException("User not found!"));
+                .orElseThrow(()->new UserNotFoundException("User not found!"));
         return userMapper.toResponseDTO(user);
     }
 
     @Override
     public UserResponseDTO getUserByEmail(String email) {
         User user = repository.findByEmail(email)
-                .orElseThrow(()->new RuntimeException("User not found"));
+                .orElseThrow(()->new UserNotFoundException("User not found"));
         return userMapper.toResponseDTO(user);
     }
 
@@ -63,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO updateUser(Long id,UserRequestDTO dto) {
         User user=repository.findById(id)
-                .orElseThrow(()->new RuntimeException("User not found!"));
+                .orElseThrow(()->new UserNotFoundException("User not found!"));
         user.setuserName(dto.getUserName());
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
         user.setPassword(encodedPassword);
@@ -76,6 +77,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteById(Long id) {
-        repository.deleteById(id);
+
+        User user=repository.findById(id)
+                .orElseThrow(()->new UserNotFoundException("User not found!"));
+        repository.delete(user);
     }
 }
