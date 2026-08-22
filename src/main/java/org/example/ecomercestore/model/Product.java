@@ -19,6 +19,7 @@ public class Product {
 
 
 
+
     @ManyToOne
     @JoinColumn(name="category_id", nullable = false)
     private Category category;
@@ -28,12 +29,13 @@ public class Product {
 
     public  Product() {}
 
-    public Product(String name, String description, BigDecimal price, int quantity, String image) {
+    public Product(String name, String description, BigDecimal price, int quantity, String image,String category) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
         this.image = image;
+        this.category = new Category();
     }
     public Long getId() {return id;}
     public void setId(Long id) {this.id = id;}
