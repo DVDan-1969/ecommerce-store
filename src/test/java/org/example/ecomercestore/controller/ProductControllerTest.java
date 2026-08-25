@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.awt.*;
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -32,6 +33,29 @@ public class ProductControllerTest {
     private MockMvc mockMvc;
     @MockitoBean
     private ProductService productService;
+
+
+    @Test
+    void shouldReturnProducts() throws Exception {
+        ProductResponseDTO product1 = new ProductResponseDTO();
+        product1.setId(1L);
+        product1.setProductName("Laptop Samsung");
+
+        ProductResponseDTO product2 = new ProductResponseDTO();
+        product2.setId(2L);
+        product2.setProductName("iPhone 15");
+
+        when(productService.getAllProducts())
+                 .thenReturn(List.of(product1,product2));
+
+        mockMvc.perform(get("/api/products"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].productName").value("Laptop Samsung"))
+                .andExpect(jsonPath("$[1].productName").value("iPhone 15"));
+
+
+    }
+
 
     @Test
     void shouldReturnProductExists() throws Exception {
@@ -52,8 +76,6 @@ public class ProductControllerTest {
     }
 
 
-
-
     @Test
     void shouldReturnProductNotFound() throws Exception {
         Long id = 999L;
@@ -65,9 +87,6 @@ public class ProductControllerTest {
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.product").value("product not found"));
     }
-
-
-
 
 
 
