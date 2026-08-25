@@ -1,5 +1,6 @@
 package org.example.ecomercestore.controller;
 
+import jakarta.validation.Valid;
 import org.example.ecomercestore.dto.CategoryRequestDTO;
 import org.example.ecomercestore.dto.CategoryResponseDTO;
 import org.example.ecomercestore.service.CategoryService;
@@ -28,7 +29,7 @@ public class CategoryController {
     }
 
     @PostMapping
-    public CategoryResponseDTO saveCategory(@RequestBody CategoryRequestDTO dto) {
+    public CategoryResponseDTO saveCategory(@Valid @RequestBody CategoryRequestDTO dto) {
         return service.saveCategory(dto);
     }
 
