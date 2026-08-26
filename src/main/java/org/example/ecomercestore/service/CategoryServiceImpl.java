@@ -3,6 +3,7 @@ package org.example.ecomercestore.service;
 import jakarta.transaction.Transactional;
 import org.example.ecomercestore.dto.CategoryRequestDTO;
 import org.example.ecomercestore.dto.CategoryResponseDTO;
+import org.example.ecomercestore.exception.CategoryNotFoundException;
 import org.example.ecomercestore.mapper.CategoryMapper;
 import org.example.ecomercestore.model.Category;
 import org.example.ecomercestore.repository.CategoryRepository;
@@ -37,7 +38,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDTO getCategoryById(Long id) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("category not found"));
+                .orElseThrow(()->new CategoryNotFoundException("category not found"));
         return categoryMapper.toResponseDTO(category);
     }
 
@@ -53,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryResponseDTO updateCategory(Long id, CategoryRequestDTO dto) {
         Category category =categoryRepository.findById(id)
-                .orElseThrow(()->new RuntimeException("category not found"));
+                .orElseThrow(()->new CategoryNotFoundException("category not found"));
         category.setCategoryName(dto.getCategoryName());
         Category updatedCategory = categoryRepository.save(category);
         return categoryMapper.toResponseDTO(updatedCategory);
@@ -62,7 +63,9 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteCategory(Long id) {
-        categoryRepository.deleteById(id);
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(()->new CategoryNotFoundException("category not found"));
+        categoryRepository.delete(category);
     }
 
 }
