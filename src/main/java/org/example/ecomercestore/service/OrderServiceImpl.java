@@ -66,7 +66,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void deleteById(Long id) {
-        repository.deleteById(id);
+        Order order=repository.findById(id)
+                .orElseThrow(()->new RuntimeException("Order not found"));
+        repository.delete(order);
     }
 }
 
