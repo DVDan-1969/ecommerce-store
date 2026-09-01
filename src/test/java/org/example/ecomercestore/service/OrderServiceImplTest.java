@@ -3,6 +3,7 @@ package org.example.ecomercestore.service;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.example.ecomercestore.dto.OrderRequestDTO;
 import org.example.ecomercestore.dto.OrderResponseDTO;
+import org.example.ecomercestore.exception.OrderNotFoundException;
 import org.example.ecomercestore.exception.UserNotFoundException;
 import org.example.ecomercestore.mapper.OrderMapper;
 import org.example.ecomercestore.model.User;
@@ -90,8 +91,8 @@ public class OrderServiceImplTest {
         Long id=999L;
         when(orderRepository.findById(id))
                 .thenReturn(Optional.empty());
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
+        OrderNotFoundException exception = assertThrows(
+                OrderNotFoundException.class,
                 () -> orderService.getOrderById(id)
         );
         assertEquals("Order not found", exception.getMessage());
@@ -187,8 +188,8 @@ public class OrderServiceImplTest {
         Long id=999L;
         when(orderRepository.findById(id))
                 .thenReturn(Optional.empty());
-        RuntimeException exception = assertThrows(
-                RuntimeException.class,
+        OrderNotFoundException exception = assertThrows(
+                OrderNotFoundException.class,
                 () -> orderService.update(id,orderRequestDTO)
         );
         assertEquals("Order not found", exception.getMessage());
@@ -229,8 +230,8 @@ public class OrderServiceImplTest {
         when(orderRepository.findById(id))
                 .thenReturn(Optional.empty());
 
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        OrderNotFoundException exception=assertThrows(
+                OrderNotFoundException.class,
                 () -> orderService.deleteById(id)
 
         );
