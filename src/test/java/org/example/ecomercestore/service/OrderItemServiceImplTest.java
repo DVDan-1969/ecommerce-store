@@ -2,6 +2,9 @@ package org.example.ecomercestore.service;
 
 import org.example.ecomercestore.dto.OrderItemRequestDTO;
 import org.example.ecomercestore.dto.OrderItemResponseDTO;
+import org.example.ecomercestore.exception.OrderItemNotFoundException;
+import org.example.ecomercestore.exception.OrderNotFoundException;
+import org.example.ecomercestore.exception.ProductNotFoundException;
 import org.example.ecomercestore.mapper.OrderItemMapper;
 import org.example.ecomercestore.model.Order;
 import org.example.ecomercestore.model.OrderItem;
@@ -76,8 +79,8 @@ public class OrderItemServiceImplTest {
         Long id=999L;
         when(orderItemRepository.findById(id))
                 .thenReturn(Optional.empty());
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        OrderItemNotFoundException exception=assertThrows(
+                OrderItemNotFoundException.class,
                 () -> orderItemService.getOrderItemById(id)
         );
         assertThat(exception.getMessage()).isEqualTo("Order item not found");
@@ -156,8 +159,8 @@ public class OrderItemServiceImplTest {
 
         when(orderRepository.findById(999L))
                 .thenReturn(Optional.empty());
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        OrderNotFoundException exception=assertThrows(
+                OrderNotFoundException.class,
                 () -> orderItemService.save(dto)
         );
         assertThat(exception.getMessage()).isEqualTo("Order not found");
@@ -178,8 +181,8 @@ public class OrderItemServiceImplTest {
         when(productRepository.findById(999L))
                 .thenReturn(Optional.empty());
 
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        ProductNotFoundException exception=assertThrows(
+                ProductNotFoundException.class,
                 ()->orderItemService.save(dto)
         );
         assertThat(exception.getMessage()).isEqualTo("Product not found");
@@ -247,8 +250,8 @@ public class OrderItemServiceImplTest {
         when(orderItemRepository.findById(id))
                 .thenReturn(Optional.empty());
 
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        OrderItemNotFoundException exception=assertThrows(
+                OrderItemNotFoundException.class,
                 () -> orderItemService.update(id,dto)
         );
         assertThat(exception.getMessage())
@@ -266,8 +269,8 @@ public class OrderItemServiceImplTest {
 
         when(orderRepository.findById(999L))
                 .thenReturn(Optional.empty());
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        OrderNotFoundException exception=assertThrows(
+                OrderNotFoundException.class,
                 () -> orderItemService.update(1L,dto)
         );
         assertThat(exception.getMessage()).isEqualTo("Order not found");
@@ -292,8 +295,8 @@ public class OrderItemServiceImplTest {
         when(productRepository.findById(999L))
                 .thenReturn(Optional.empty());
 
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        ProductNotFoundException exception=assertThrows(
+                ProductNotFoundException.class,
                 ()->orderItemService.update(1L,dto)
         );
         assertThat(exception.getMessage()).isEqualTo("Product not found");
@@ -342,8 +345,8 @@ public class OrderItemServiceImplTest {
 
         when(orderItemRepository.findById(id))
                    .thenReturn(Optional.empty());
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        OrderItemNotFoundException exception=assertThrows(
+                OrderItemNotFoundException.class,
                 () -> orderItemService.deleteById(id)
         );
         assertThat(exception.getMessage()).isEqualTo("Order item not found");
@@ -362,8 +365,8 @@ public class OrderItemServiceImplTest {
         when(orderRepository.findById(999L))
                 .thenReturn(Optional.empty());
 
-        RuntimeException exception=assertThrows(
-                RuntimeException.class,
+        OrderNotFoundException exception=assertThrows(
+                OrderNotFoundException.class,
                 () -> orderItemService.deleteById(orderItemId)
         );
         assertThat(exception.getMessage())

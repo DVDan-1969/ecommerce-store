@@ -3,6 +3,7 @@ package org.example.ecomercestore.service;
 import jakarta.transaction.Transactional;
 import org.example.ecomercestore.dto.OrderRequestDTO;
 import org.example.ecomercestore.dto.OrderResponseDTO;
+import org.example.ecomercestore.exception.OrderNotFoundException;
 import org.example.ecomercestore.mapper.OrderMapper;
 import org.example.ecomercestore.model.Order;
 import org.example.ecomercestore.model.User;
@@ -38,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDTO getOrderById(Long id) {
         Order order = repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Order not found"));
+                .orElseThrow(()->new OrderNotFoundException("Order not found"));
         return ordrMapper.toResponseDTO(order);
     }
 
@@ -54,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderResponseDTO update(Long id, OrderRequestDTO dto) {
         Order order = repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Order not found"));
+                .orElseThrow(()->new OrderNotFoundException("Order not found"));
         User user=userRepository.findById(dto.getUserId())
                 .orElseThrow(()->new RuntimeException("User not found"));
         order.setUser(user);
@@ -67,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public void deleteById(Long id) {
         Order order=repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Order not found"));
+                .orElseThrow(()->new OrderNotFoundException("Order not found"));
         repository.delete(order);
     }
 }
