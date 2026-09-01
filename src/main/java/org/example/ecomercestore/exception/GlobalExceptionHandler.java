@@ -45,5 +45,21 @@ public class GlobalExceptionHandler {
                 .status(HttpStatus.NOT_FOUND)
                 .body(errors);
     }
+    @ExceptionHandler(OrderNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleOrderNotFoundException(OrderNotFoundException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("order", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errors);
+    }
+    @ExceptionHandler(OrderItemNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handleOrderItemNotFoundException(OrderItemNotFoundException ex) {
+        Map<String, String> errors = new HashMap<>();
+        errors.put("orderItem", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .body(errors);
+    }
 
 }
