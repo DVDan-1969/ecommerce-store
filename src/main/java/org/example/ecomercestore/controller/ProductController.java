@@ -4,8 +4,9 @@ package org.example.ecomercestore.controller;
 import jakarta.validation.Valid;
 import org.example.ecomercestore.dto.ProductRequestDTO;
 import org.example.ecomercestore.dto.ProductResponseDTO;
-import org.example.ecomercestore.model.Product;
 import org.example.ecomercestore.service.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,6 +24,11 @@ public class ProductController {
     @GetMapping
     public List<ProductResponseDTO> getAllProducts() {
         return service.getAllProducts();
+    }
+
+    @GetMapping("/page")
+    public Page<ProductResponseDTO> getAllProductsPageable(Pageable pageable) {
+        return service.getAllProductsPageable(pageable);
     }
 
     @GetMapping("/{id}")
