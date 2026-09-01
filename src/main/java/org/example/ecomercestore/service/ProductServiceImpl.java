@@ -11,6 +11,8 @@ import org.example.ecomercestore.model.Product;
 import org.example.ecomercestore.repository.CategoryRepository;
 import org.example.ecomercestore.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -38,6 +40,12 @@ public class ProductServiceImpl implements ProductService {
                 .map(productMapper::toResponseDTO)
                 .toList();
 
+    }
+    @Override
+    public Page<ProductResponseDTO> getAllProductsPageable(Pageable pageable) {
+        Page<Product> products = repository.findAll(pageable);
+
+        return products.map(productMapper::toResponseDTO);
     }
 
     @Override

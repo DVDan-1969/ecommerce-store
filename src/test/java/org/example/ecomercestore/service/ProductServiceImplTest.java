@@ -12,10 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import org.springframework.data.domain.*;
+
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -62,6 +66,56 @@ public class ProductServiceImplTest {
         assertThat(result.getId()).isEqualTo(1L);
         assertThat(result.getProductName()).isEqualTo("Laptop Samsung");
 
+    }
+    @Test
+    void shouldReturnProductPage(){
+
+        Product product = new Product();
+
+        Pageable pageable=PageRequest.of(0, 5);
+
+        Page<Product> productPage =
+                new PageImpl<>(List.of(product));
+
+        when(productRepository.findAll(pageable))
+                .thenReturn(productPage);
+
+        ProductResponseDTO responseDTO= new ProductResponseDTO();
+
+        when(productMapper.toResponseDTO(product))
+                .thenReturn(responseDTO);
+
+        Page<ProductResponseDTO> result =
+                productService.getAllProductsPageable(pageable);
+
+        assertNotNull(result);
+        assertEquals(1,result.getNumberOfElements());
+        assertEquals(responseDTO, result.getContent().get(0));
+
+        verify(productRepository).findAll(pageable);
+        verify(productMapper).toResponseDTO(product);
+    }
+    @Test
+    void shouldReturnProductsPageSortedByPriceAscending(){
+        Pageable pageable =
+                PageRequest.of(0, 5, Sort.by("price").ascending());
+       Product product = new Product();
+       Page<Product> productPage =
+                new PageImpl<>(List.of(product));
+       when(productRepository.findAll(pageable))
+               .thenReturn(productPage);
+       ProductResponseDTO responseDTO= new ProductResponseDTO();
+       when(productMapper.toResponseDTO(product))
+               .thenReturn(responseDTO);
+       Page<ProductResponseDTO> result =
+                productService.getAllProductsPageable(pageable);
+       assertNotNull(result);
+       assertEquals(1,result.getNumberOfElements());
+       assertEquals(Sort.Direction.ASC,
+               pageable.getSort().getOrderFor("price").getDirection()
+       );
+       verify(productRepository).findAll(pageable);
+       verify(productMapper).toResponseDTO(product);
 
     }
 

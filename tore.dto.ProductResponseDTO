@@ -1,0 +1,60 @@
+[1mdiff --git a/src/main/java/org/example/ecomercestore/service/ProductServiceImpl.java b/src/main/java/org/example/ecomercestore/service/ProductServiceImpl.java[m
+[1mindex 3f13b6d..60d12fb 100644[m
+[1m--- a/src/main/java/org/example/ecomercestore/service/ProductServiceImpl.java[m
+[1m+++ b/src/main/java/org/example/ecomercestore/service/ProductServiceImpl.java[m
+[36m@@ -5,11 +5,16 @@[m [mimport org.example.ecomercestore.dto.ProductRequestDTO;[m
+ import org.example.ecomercestore.dto.ProductResponseDTO;[m
+ import org.example.ecomercestore.exception.CategoryNotFoundException;[m
+ import org.example.ecomercestore.exception.ProductNotFoundException;[m
+[32m+[m[32mimport org.example.ecomercestore.mapper.OrderMapper;[m
+ import org.example.ecomercestore.mapper.ProductMapper;[m
+ import org.example.ecomercestore.model.Category;[m
+ import org.example.ecomercestore.model.Product;[m
+ import org.example.ecomercestore.repository.CategoryRepository;[m
+[32m+[m[32mimport org.example.ecomercestore.repository.OrderRepository;[m
+ import org.example.ecomercestore.repository.ProductRepository;[m
+[32m+[m[32mimport org.example.ecomercestore.repository.UserRepository;[m
+[32m+[m[32mimport org.springframework.data.domain.Page;[m
+[32m+[m[32mimport org.springframework.data.domain.Pageable;[m
+ import org.springframework.stereotype.Service;[m
+ [m
+ import java.util.List;[m
+[36m@@ -30,6 +35,38 @@[m [mpublic class ProductServiceImpl implements ProductService {[m
+         this.categoryRepository = categoryRepository;[m
+     }[m
+ [m
+[32m+[m
+[32m+[m[32mimport jakarta.transaction.Transactional;[m
+[32m+[m[32mimport org.example.ecomercestore.dto.OrderRequestDTO;[m
+[32m+[m[32mimport org.example.ecomercestore.dto.OrderResponseDTO;[m
+[32m+[m[32mimport org.example.ecomercestore.dto.ProductResponseDTO;[m
+[32m+[m[32mimport org.example.ecomercestore.exception.OrderNotFoundException;[m
+[32m+[m[32mimport org.example.ecomercestore.mapper.OrderMapper;[m
+[32m+[m[32mimport org.example.ecomercestore.model.Order;[m
+[32m+[m[32mimport org.example.ecomercestore.model.User;[m
+[32m+[m[32mimport org.example.ecomercestore.repository.OrderRepository;[m
+[32m+[m[32mimport org.example.ecomercestore.repository.UserRepository;[m
+[32m+[m[32mimport org.springframework.stereotype.Service;[m
+[32m+[m[32mimport org.springframework.data.domain.Page;[m
+[32m+[m[32mimport org.springframework.data.domain.Pageable;[m
+[32m+[m
+[32m+[m
+[32m+[m[32mimport java.util.List;[m
+[32m+[m
+[32m+[m[32m    @Service[m
+[32m+[m[32m    @Transactional[m
+[32m+[m[32m    public class OrderServiceImpl implements OrderService {[m
+[32m+[m[32m        private final OrderRepository repository;[m
+[32m+[m[32m        private final OrderMapper ordrMapper;[m
+[32m+[m[32m        private final UserRepository userRepository;[m
+[32m+[m
+[32m+[m[32m        public OrderServiceImpl(OrderRepository repository, OrderMapper ordrMapper, UserRepository userRepository) {[m
+[32m+[m[32m            this.repository = repository;[m
+[32m+[m[32m            this.ordrMapper = ordrMapper;[m
+[32m+[m[32m            this.userRepository = userRepository;[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m
+     @Override[m
+     public List<ProductResponseDTO> getAllProducts() {[m
+ [m
