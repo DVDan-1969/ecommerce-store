@@ -1,6 +1,7 @@
 package org.example.ecomercestore.controller;
 
 import org.example.ecomercestore.dto.UserResponseDTO;
+import org.example.ecomercestore.exception.UserNotFoundException;
 import org.example.ecomercestore.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+
 
 import java.util.List;
 
@@ -46,6 +48,17 @@ public class UserControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].userName").value("Ion"))
                 .andExpect(jsonPath("$[1].userName").value("Mihai"));
+    }
+    @Test
+    void shouldReturnNotFoundWhenUserDoesNotExist() throws Exception {
+        Long userId = 999L;
+
+        when(userService.getUserById(userId))
+                .thenThrow(new UserNotFoundException("User not found"));
+        mockMvc.perform(get("/users/{id}" ,userId))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.user").value("User not found"));
+
     }
 }
 
