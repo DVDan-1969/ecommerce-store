@@ -46,7 +46,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public OrderItemResponseDTO getOrderItemById(Long id) {
         OrderItem orderItem = repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Order Item Not Found"));
+                .orElseThrow(()->new RuntimeException("Order item not found"));
         return mapper.toResponseDTO(orderItem);
     }
 
@@ -55,7 +55,7 @@ public class OrderItemServiceImpl implements OrderItemService {
         Order order=orderRepository.findById(dto.getOrderId())
                 .orElseThrow(()->new RuntimeException("Order not found"));
         Product product=productRepository.findById(dto.getProductId())
-                .orElseThrow(()->new RuntimeException("Product Not Found"));
+                .orElseThrow(()->new RuntimeException("Product not found"));
         OrderItem orderItem=mapper.toEntity(dto,order,product);
         OrderItem orderItemSaved = repository.save(orderItem);
         order.setTotal(calculeazaTotal(order));
@@ -68,11 +68,11 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public OrderItemResponseDTO update(Long id, OrderItemRequestDTO dto) {
         OrderItem orderItem= repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Order Item Not Found"));
+                .orElseThrow(()->new RuntimeException("Order item not found"));
         Order order=orderRepository.findById(dto.getOrderId())
-                .orElseThrow(()->new RuntimeException("Order Not Found"));
+                .orElseThrow(()->new RuntimeException("Order not found"));
         Product product=productRepository.findById(dto.getProductId())
-                .orElseThrow(()->new RuntimeException("Product Not Found"));
+                .orElseThrow(()->new RuntimeException("Product not found"));
         orderItem.setOrder(order);
         orderItem.setProduct(product);
         orderItem.setQuantity(dto.getQuantity());
@@ -94,12 +94,12 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public void deleteById(Long id) {
         OrderItem orderItem=repository.findById(id)
-                .orElseThrow(()->new RuntimeException("Order Item Not Found"));
+                .orElseThrow(()->new RuntimeException("Order item not found"));
         Long orderId= orderItem.getOrder().getId();
         repository.delete(orderItem);
         repository.flush();
         Order order=orderRepository.findById(orderId)
-                        .orElseThrow(()->new RuntimeException("Order Not Found"));
+                        .orElseThrow(()->new RuntimeException("Order not found"));
         order.setTotal(calculeazaTotal(order));
         orderRepository.save(order);
     }
