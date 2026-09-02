@@ -10,15 +10,18 @@ import org.example.ecomercestore.model.Category;
 import org.example.ecomercestore.model.Product;
 import org.example.ecomercestore.repository.CategoryRepository;
 import org.example.ecomercestore.repository.ProductRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-
 import java.util.List;
 
 @Service
 @Transactional
 public class ProductServiceImpl implements ProductService {
+
+    private static final Logger logger = LoggerFactory.getLogger(ProductServiceImpl.class);
 
     private final ProductRepository repository;
     private final ProductMapper productMapper;
@@ -35,6 +38,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductResponseDTO> getAllProducts() {
 
+        logger.info("Retrieving all products");
+
+
         return repository.findAll()
                 .stream()
                 .map(productMapper::toResponseDTO)
@@ -50,27 +56,46 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponseDTO getProductById(Long id) {
+        logger.info("Searching for product with id {}", id);
         Product product = repository.findById(id)
-                .orElseThrow(()->new ProductNotFoundException("product not found"));
+                .orElseThrow(()->{
+                    logger.warn("Product with id {} not found", id);
+                    return new ProductNotFoundException("Product not found");
+                });
+
 
         return productMapper.toResponseDTO(product);
     }
 
     @Override
     public ProductResponseDTO save(ProductRequestDTO dto) {
+
+       logger.info("Creating product with category id {}", dto.getCategoryId());
         Category category= categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(()->new CategoryNotFoundException("Category not found"));
+                .orElseThrow(()->{
+                    logger.warn("Category with id {} not found", dto.getCategoryId());
+                     return new CategoryNotFoundException("Category not found");
+                });
         Product product = productMapper.toEntity(dto,category);
         Product savedProduct = repository.save(product);
+        logger.info("Product created successfully with id {}",savedProduct.getId());
         return productMapper.toResponseDTO(savedProduct);
     }
 
     @Override
     public ProductResponseDTO update(Long id, ProductRequestDTO dto) {
+
+        logger.info("Updating product with id {}", id);
         Product product = repository.findById(id)
-                .orElseThrow(()->new ProductNotFoundException("Product not found"));
+                .orElseThrow(()->{
+                    logger.warn("Product with id {} not found",id);
+                    return new ProductNotFoundException("Product not found");
+                });
         Category category=categoryRepository.findById(dto.getCategoryId())
-                .orElseThrow(()->new CategoryNotFoundException("Category not found"));
+                .orElseThrow(()->{
+                    logger.warn("Category with id {} not found",dto.getCategoryId());
+                    return new CategoryNotFoundException("Category not found");
+                });
         product.setName(dto.getProductName());
         product.setDescription(dto.getProductDescription());
         product.setPrice(dto.getProductPrice());
@@ -78,14 +103,20 @@ public class ProductServiceImpl implements ProductService {
         product.setImage(dto.getProductImage());
         product.setCategory(category);
         Product updatedProduct = repository.save(product);
+        logger.info("Product with id {} updated successfully",updatedProduct.getId());
         return productMapper.toResponseDTO(updatedProduct);
     }
 
     @Override
     public void deleteById(Long id) {
+        logger.info("Deleting product with id {}", id);
         Product product= repository.findById(id)
-                .orElseThrow(()->new ProductNotFoundException("Product not found"));
+                .orElseThrow(()->{
+                    logger.warn("Product with id {} not found", id);
+                    return new ProductNotFoundException("Product not found");
+                });
         repository.delete(product);
+        logger.info("Product with id {} deleted successfully",id);
     }
 }
 
