@@ -19,15 +19,42 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/products/**").permitAll()
-                        .requestMatchers(HttpMethod.GET,"/users/**")
-                        .hasAnyRole("USER", "ADMIN")
-                        .requestMatchers(HttpMethod.POST,"/users/**")
-                        .hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.PUT,"/users/**")
-                        .hasAnyRole("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE,"/users/**")
-                        .hasAnyRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/api/products/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST,"/api/products/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/api/products/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/api/products/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers("/users/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/categories/**")
+                        .permitAll()
+                        .requestMatchers(HttpMethod.POST,"/categories/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT,"/categories/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE,"/categories/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/orders/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST,"/orders/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.PUT,"/orders/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE,"/orders/**")
+                        .hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET,"/orderItems/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.POST,"/orderItems/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.PUT,"/orderItems/**")
+                        .hasAnyRole("ADMIN", "USER")
+                        .requestMatchers(HttpMethod.DELETE,"/orderItems/**")
+                        .hasRole("ADMIN")
+
+
                         .anyRequest().authenticated()
 
                 )
@@ -35,7 +62,6 @@ public class SecurityConfig {
 
         return http.build();
     }
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
