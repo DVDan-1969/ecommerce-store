@@ -13,6 +13,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import org.springframework.data.domain.*;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,6 +67,27 @@ public class ProductServiceImplTest {
         assertThat(result).isNotNull();
         assertThat(result.getId()).isEqualTo(1L);
         assertThat(result.getProductName()).isEqualTo("Laptop Samsung");
+
+    }
+    @Test
+    void shouldSearchProductsByName() {
+
+        Product p= new Product();
+        p.setName("Laptop");
+
+        ProductResponseDTO productResponseDTO = new ProductResponseDTO();
+        productResponseDTO.setProductName("Laptop");
+
+        when(productRepository.searchByName("Laptop"))
+                .thenReturn(List.of(p));
+        when(productMapper.toResponseDTO(p))
+                .thenReturn(productResponseDTO);
+        List<ProductResponseDTO> result = productService.searchByName("Laptop");
+
+        assertNotNull(result);
+        assertEquals(1, result.size());
+        assertEquals("Laptop", result.get(0).getProductName());
+
 
     }
     @Test

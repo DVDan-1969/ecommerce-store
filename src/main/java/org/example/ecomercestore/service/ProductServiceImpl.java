@@ -48,6 +48,15 @@ public class ProductServiceImpl implements ProductService {
 
     }
     @Override
+    public List<ProductResponseDTO> searchByName(String name){
+        logger.info("Searching for products by name:{}",name);
+
+        return repository.searchByName(name)
+                .stream()
+                .map(productMapper::toResponseDTO)
+                .toList();
+    }
+    @Override
     public Page<ProductResponseDTO> getAllProductsPageable(Pageable pageable) {
         Page<Product> products = repository.findAll(pageable);
 

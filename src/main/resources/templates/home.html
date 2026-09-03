@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>E-commerce Store</title>
+</head>
+<body>
+<h1>E-commerce Store</h1>
+<p>Welcome to the application!</p>
+<a th:href="@{/products}">Products</a>
+<a th:href="@{/categories-page}">Categories</a>
+<a th:href="@{/orders-page}">Orders</a>
+<a th:href="@{/order-items-page}">Order Items</a>
+<br><br>
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Logout</button>
+</form>
+</body>
+</html>

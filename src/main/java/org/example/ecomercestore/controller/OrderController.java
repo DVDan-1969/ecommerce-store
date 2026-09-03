@@ -1,5 +1,6 @@
 package org.example.ecomercestore.controller;
 
+import jakarta.validation.Valid;
 import org.example.ecomercestore.dto.OrderRequestDTO;
 import org.example.ecomercestore.dto.OrderResponseDTO;
 import org.example.ecomercestore.service.OrderService;
@@ -28,7 +29,8 @@ public class OrderController {
     }
 
     @PostMapping
-    public OrderResponseDTO saveOrder(@RequestBody OrderRequestDTO dto) {
+    public OrderResponseDTO saveOrder(
+            @Valid @RequestBody OrderRequestDTO dto) {
         return service.save(dto);
     }
 
@@ -39,8 +41,9 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderResponseDTO> updateOrder(@PathVariable Long id, @RequestBody OrderRequestDTO dto) {
-        OrderResponseDTO updatedOrder = service.update(id,dto);
+    public ResponseEntity<OrderResponseDTO> updateOrder(
+            @Valid @PathVariable Long id, @RequestBody OrderRequestDTO dto) {
+        OrderResponseDTO updatedOrder = service.update(id, dto);
         return ResponseEntity.ok(updatedOrder);
     }
 }
