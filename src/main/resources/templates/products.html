@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Products</title>
+</head>
+<body>
+
+<h1>Products</h1>
+<a th:href="@{/products/add}"
+   sec:authorize="hasRole('ADMIN')">
+    Add Product
+</a>
+<form th:action="@{/products/search}" method="get">
+    <input type="text" name="name" placeholder="Search product">
+    <button type="submit">Search</button>
+</form>
+
+<br>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.productName}"></td>
+        <td th:text="${product.productPrice}"></td>
+        <td th:text="${product.productQuantity}"></td>
+        <td th:text="${product.productDescription}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

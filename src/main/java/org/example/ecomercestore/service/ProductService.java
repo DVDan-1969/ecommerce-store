@@ -10,6 +10,8 @@ import java.util.List;
 
 public interface ProductService {
 
+    List<ProductResponseDTO> searchByName(String name);
+
 
     List<ProductResponseDTO> getAllProducts();
 
