@@ -7,6 +7,7 @@ import org.example.ecomercestore.dto.ProductResponseDTO;
 import org.example.ecomercestore.service.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,18 +37,20 @@ public class ProductController {
 
         return service.getProductById(id);
     }
-
     @PostMapping
-    public ProductResponseDTO saveProduct(@Valid @RequestBody ProductRequestDTO dto) {
-        return service.save(dto);
-    }
+    public ResponseEntity<ProductResponseDTO> saveProduct(
+            @Valid @RequestBody ProductRequestDTO dto) {
 
+        ProductResponseDTO savedProduct = service.save(dto);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(savedProduct);
+    }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProductById(@PathVariable Long id) {
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-
     @PutMapping("/{id}")
     public ResponseEntity<ProductResponseDTO> updateProductById(
             @PathVariable Long id,
